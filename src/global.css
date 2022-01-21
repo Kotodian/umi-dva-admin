@@ -1,0 +1,11 @@
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.ant-menu-vertical {
+  min-width: 96px !important;
+}
