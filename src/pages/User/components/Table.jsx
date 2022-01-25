@@ -1,7 +1,8 @@
-import { Pagination, Space, Table } from 'antd';
+import { Button, Pagination, Space, Table } from 'antd';
 import { routerRedux } from 'dva/router';
 import React from 'react';
 import { connect } from 'umi';
+import UserEditForm from './Form';
 
 const { Column, ColumnGroup } = Table;
 
@@ -15,8 +16,20 @@ function Users({ dispatch, users: dataSource, total, pageSize, loading, page: cu
     }));
   }
 
+  function createHandler(values) {
+    dispatch({
+      type: 'create',
+      payload: values,
+    });
+  }
+
   return (
     <div>
+      <div>
+        <UserEditForm record={{}} onOk={createHandler}>
+          <Button type='primary'>创建用户</Button>
+        </UserEditForm>
+      </div>
       <Table
         dataSource={dataSource}
         rowKey={record => record.id}

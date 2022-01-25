@@ -1,11 +1,11 @@
-import { userList } from '@/services/user';
+import * as userService from '@/services/user';
 
 const Model = {
   namespace: 'users',
   state: {},
   effects: {
     * list({ payload: { page = 1, pageSize = 10 } }, { call, put }) {
-      const response = yield call(userList, { page, pageSize });
+      const response = yield call(userService.list, { page, pageSize });
 
       if (response.code === 200) {
         const { data } = response;
@@ -21,6 +21,11 @@ const Model = {
         );
       }
       console.log('get user list success');
+    },
+    * create({ payload: values }, { call, put, select }) {
+      yield call(userService.create, values);
+      const page = yield select(state => state.users.page);
+      yield put({ type: 'list', payload: { page } });
     },
   },
   reducers: {

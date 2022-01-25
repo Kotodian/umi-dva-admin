@@ -17,4 +17,5 @@ export default {
   'GET /users/:id': (req, res) => {
 
   },
+  'POST /users': { code: 200, data: { id: 2 } },
 };
