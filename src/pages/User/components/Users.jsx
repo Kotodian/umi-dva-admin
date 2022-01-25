@@ -1,51 +1,59 @@
-import { Space, Table } from 'antd';
-import { connect } from 'umi';
+import { Pagination, Space, Table } from 'antd';
+import { routerRedux } from 'dva/router';
 import React from 'react';
+import { connect } from 'umi';
+
+const { Column, ColumnGroup } = Table;
 
 
-function Users({ dispatch, users: dataSource }) {
-  console.log(dataSource);
-  const columns = [
-    {
-      title: '用户名',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a>{text}</a>,
-    },
-    {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: '住址',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => (
-        <Space size='middle'>
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
-    },
-  ];
+function Users({ dispatch, users: dataSource, total, pageSize, loading, page: current }) {
+
+  function pageChangeHandler(page) {
+    dispatch(routerRedux.push({
+      pathname: '/user',
+      query: { page },
+    }));
+  }
+
   return (
-    <Table
-      columns={columns}
-      dataSource={dataSource}
-    />
+    <div>
+      <Table
+        dataSource={dataSource}
+        rowKey={record => record.id}
+        pagination={false}
+      >
+        <Column title='用户名' dataIndex='name' key='name' render={text => <a>{text}</a>} />
+        <Column title='年龄' dataIndex='age' key='age' />
+        <Column title='住址' dataIndex='address' key='address' />
+        <Column title='操作' key='action' render={() => (
+          <Space size='middle'>
+            <a>更新</a>
+            <a>删除</a>
+          </Space>
+        )} />
+      < /Table>
+      <Pagination
+        className='ant-table-pagination'
+        loading={loading}
+        total={total}
+        defaultCurrent={1}
+        current={current}
+        onChange={pageChangeHandler}
+        showTotal={total => `总共 ${total} 用户`}
+        showSizeChanger
+      />
+    </div>
   );
 }
 
 function mapStateToProps(state) {
-  const { users } = state;
-  console.log('mapStateToProps', users);
+  const { list, total, page, pageSize } = state.users;
   return {
-    users: users.list,
+    users: list,
+    total: total,
+    page: page,
+    pageSize: pageSize,
+    loading: state.loading.models.users,
   };
 }
 

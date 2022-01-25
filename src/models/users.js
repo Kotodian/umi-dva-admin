@@ -4,8 +4,8 @@ const Model = {
   namespace: 'users',
   state: {},
   effects: {
-    * list({ payload }, { call, put }) {
-      const response = yield call(userList);
+    * list({ payload: { page = 1, pageSize = 10 } }, { call, put }) {
+      const response = yield call(userList, { page, pageSize });
 
       if (response.code === 200) {
         const { data } = response;
@@ -13,6 +13,9 @@ const Model = {
             type: 'changeUserList',
             payload: {
               list: data.users,
+              total: data.total,
+              page: parseInt(page, 10),
+              pageSize: parseInt(pageSize, 10),
             },
           },
         );
@@ -21,15 +24,15 @@ const Model = {
     },
   },
   reducers: {
-    changeUserList(state, { payload: { list } }) {
-      return { ...state, list };
+    changeUserList(state, { payload: { list, total, page, pageSize } }) {
+      return { ...state, list, total, page, pageSize };
     },
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      return history.listen(({ pathname }) => {
+      return history.listen(({ pathname, query }) => {
         if (pathname === '/user') {
-          dispatch({ type: 'list' });
+          dispatch({ type: 'list', payload: query });
         }
       });
     },

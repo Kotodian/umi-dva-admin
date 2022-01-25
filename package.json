@@ -27,6 +27,7 @@
     "@umijs/test": "^3.2.16",
     "antd": "^4.18.4",
     "classnames": "^2.3.1",
+    "dva": "^2.4.1",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "react": "^16.12.0",

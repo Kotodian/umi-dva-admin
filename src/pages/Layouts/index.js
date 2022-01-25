@@ -48,7 +48,7 @@ function BasicLayout(props) {
                 {
                   key: 'user', name: '用户管理', icon: <UserOutlined />,
                   items: [
-                    { key: 'list', name: '用户列表', icon: <UserOutlined />, link: '/user' },
+                    { key: 'list', name: '用户列表', icon: <UserOutlined />, link: '/user?page=1&pageSize=20' },
                   ],
                 },
               ]
