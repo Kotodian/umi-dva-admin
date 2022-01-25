@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 const FormItem = Form.Item;
 
-
 function UserEditForm(props) {
   const [visible, setVisible] = useState(false);
   const { children } = props;
@@ -14,7 +13,7 @@ function UserEditForm(props) {
     wrapperCol: { span: 14 },
   };
 
-  const showHandler = (e) => {
+  const showHandler = e => {
     if (e) e.stopPropagation();
     setVisible(true);
   };
@@ -35,30 +34,23 @@ function UserEditForm(props) {
 
   return (
     <span>
-     <span onClick={showHandler}>
-       {children}
-     </span>
-     <Modal
-       title='编辑用户'
-       visible={visible}
-       onOk={okHandler}
-       onCancel={hideHandler}
-     >
-      <Form horizontal onSubmit={okHandler}>
-        <FormItem
-          {...formItemLayout}
-          label='用户名'
-        >
-          {
-            getFieldDecorator('name', {
+      <span onClick={showHandler}>{children}</span>
+      <Modal
+        title="编辑用户"
+        visible={visible}
+        onOk={okHandler}
+        onCancel={hideHandler}
+      >
+        <Form horizontal onSubmit={okHandler}>
+          <FormItem {...formItemLayout} label="用户名">
+            {getFieldDecorator('name', {
               initialValue: name,
-            })(<Input />)
-          }
-        </FormItem>
-      </Form>
-     </Modal>
-</span>
+            })(<Input />)}
+          </FormItem>
+        </Form>
+      </Modal>
+    </span>
   );
 }
 
-export default Form.create()(UserEditForm);
+// export default Form.create()(UserEditForm);

@@ -1,19 +1,25 @@
-import { Button, Pagination, Space, Table } from 'antd';
+import { Pagination, Space, Table } from 'antd';
 import { routerRedux } from 'dva/router';
 import React from 'react';
 import { connect } from 'umi';
-import UserEditForm from './Form';
 
 const { Column, ColumnGroup } = Table;
 
-
-function Users({ dispatch, users: dataSource, total, pageSize, loading, page: current }) {
-
+function Users({
+  dispatch,
+  users: dataSource,
+  total,
+  pageSize,
+  loading,
+  page: current,
+}) {
   function pageChangeHandler(page) {
-    dispatch(routerRedux.push({
-      pathname: '/user',
-      query: { page },
-    }));
+    dispatch(
+      routerRedux.push({
+        pathname: '/user',
+        query: { page },
+      }),
+    );
   }
 
   function createHandler(values) {
@@ -26,27 +32,36 @@ function Users({ dispatch, users: dataSource, total, pageSize, loading, page: cu
   return (
     <div>
       <div>
-        <UserEditForm record={{}} onOk={createHandler}>
-          <Button type='primary'>创建用户</Button>
-        </UserEditForm>
+        {/*<UserEditForm record={{}} onOk={createHandler}>*/}
+        {/*  <Button type='primary'>创建用户</Button>*/}
+        {/*</UserEditForm>*/}
       </div>
       <Table
         dataSource={dataSource}
         rowKey={record => record.id}
         pagination={false}
       >
-        <Column title='用户名' dataIndex='name' key='name' render={text => <a>{text}</a>} />
-        <Column title='年龄' dataIndex='age' key='age' />
-        <Column title='住址' dataIndex='address' key='address' />
-        <Column title='操作' key='action' render={() => (
-          <Space size='middle'>
-            <a>更新</a>
-            <a>删除</a>
-          </Space>
-        )} />
-      < /Table>
+        <Column
+          title="用户名"
+          dataIndex="name"
+          key="name"
+          render={text => <a>{text}</a>}
+        />
+        <Column title="年龄" dataIndex="age" key="age" />
+        <Column title="住址" dataIndex="address" key="address" />
+        <Column
+          title="操作"
+          key="action"
+          render={() => (
+            <Space size="middle">
+              <a>更新</a>
+              <a>删除</a>
+            </Space>
+          )}
+        />
+      </Table>
       <Pagination
-        className='ant-table-pagination'
+        className="ant-table-pagination"
         loading={loading}
         total={total}
         defaultCurrent={1}
