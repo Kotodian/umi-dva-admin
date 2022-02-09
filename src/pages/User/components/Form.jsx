@@ -27,7 +27,15 @@ function UserEditForm(props) {
   };
 
   const okHandler = () => {
-    setVisible(false);
+    form
+      .validateFields()
+      .then(values => {
+        form.resetFields();
+        setVisible(false);
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
   };
 
   const onChangeHandler = () => {};
@@ -62,7 +70,6 @@ function UserEditForm(props) {
             rules={[
               {
                 required: true,
-                message: '请输入您的年龄',
                 min: 0,
                 max: 150,
                 type: 'number',
