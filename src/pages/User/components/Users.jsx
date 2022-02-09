@@ -1,7 +1,8 @@
-import { Pagination, Space, Table } from 'antd';
+import { Button, Pagination, Popconfirm, Table } from 'antd';
 import { routerRedux } from 'dva/router';
 import React from 'react';
 import { connect } from 'umi';
+import UserEditForm from './Form';
 
 const { Column, ColumnGroup } = Table;
 
@@ -22,6 +23,20 @@ function Users({
     );
   }
 
+  function deleteHandler(id) {
+    dispatch({
+      type: 'users/remove',
+      payload: id,
+    });
+  }
+
+  function editHandler(id, values) {
+    dispatch({
+      type: 'users/patch',
+      payload: { id, values },
+    });
+  }
+
   function createHandler(values) {
     dispatch({
       type: 'create',
@@ -32,9 +47,9 @@ function Users({
   return (
     <div>
       <div>
-        {/*<UserEditForm record={{}} onOk={createHandler}>*/}
-        {/*  <Button type='primary'>创建用户</Button>*/}
-        {/*</UserEditForm>*/}
+        <UserEditForm record={{}} onOk={createHandler}>
+          <Button type="primary">创建用户</Button>
+        </UserEditForm>
       </div>
       <Table
         dataSource={dataSource}
@@ -52,11 +67,21 @@ function Users({
         <Column
           title="操作"
           key="action"
-          render={() => (
-            <Space size="middle">
-              <a>更新</a>
-              <a>删除</a>
-            </Space>
+          render={(text, record) => (
+            <span>
+              <UserEditForm
+                record={record}
+                onOk={editHandler.bind(null, record.id)}
+              >
+                <a>更新 </a>
+              </UserEditForm>
+              <Popconfirm
+                title="Confirm to delete?"
+                onConfirm={deleteHandler.bind(null, record.id)}
+              >
+                <a>删除</a>
+              </Popconfirm>
+            </span>
           )}
         />
       </Table>

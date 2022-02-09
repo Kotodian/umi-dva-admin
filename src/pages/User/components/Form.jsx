@@ -6,7 +6,7 @@ const FormItem = Form.Item;
 function UserEditForm(props) {
   const [visible, setVisible] = useState(false);
   const { children } = props;
-  const { getFieldDecorator } = props.form;
+  const [form] = Form.useForm();
   const { name } = props.record;
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -23,14 +23,10 @@ function UserEditForm(props) {
   };
 
   const okHandler = () => {
-    const { onOk } = props;
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        onOk(values);
-        hideHandler();
-      }
-    });
+    setVisible(false);
   };
+
+  const onChangeHandler = () => {};
 
   return (
     <span>
@@ -41,11 +37,20 @@ function UserEditForm(props) {
         onOk={okHandler}
         onCancel={hideHandler}
       >
-        <Form horizontal onSubmit={okHandler}>
-          <FormItem {...formItemLayout} label="用户名">
-            {getFieldDecorator('name', {
-              initialValue: name,
-            })(<Input />)}
+        <Form form={form}>
+          <FormItem
+            {...formItemLayout}
+            label="用户名"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your name',
+              },
+            ]}
+            initialValue={name}
+          >
+            <Input />
           </FormItem>
         </Form>
       </Modal>
@@ -53,4 +58,4 @@ function UserEditForm(props) {
   );
 }
 
-// export default Form.create()(UserEditForm);
+export default UserEditForm;
