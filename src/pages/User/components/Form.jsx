@@ -1,5 +1,5 @@
-import { Form, Input, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Form, Input, InputNumber, Modal } from 'antd';
+import React, { useState } from 'react';
 
 const FormItem = Form.Item;
 
@@ -7,20 +7,18 @@ function UserEditForm(props) {
   const [visible, setVisible] = useState(false);
   const { children } = props;
   const [form] = Form.useForm();
-  const { name } = props.record;
+  const { name, age } = props.record;
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
   };
 
-  useEffect(() => {
-    form.setFieldsValue({
-      name: name,
-    });
-  });
-
   const showHandler = e => {
     if (e) e.stopPropagation();
+    form.setFieldsValue({
+      name: name,
+      age: age,
+    });
     setVisible(true);
   };
 
@@ -51,11 +49,27 @@ function UserEditForm(props) {
             rules={[
               {
                 required: true,
-                message: 'Please input your name',
+                message: '请输入您的名称',
               },
             ]}
           >
             <Input />
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="年龄"
+            name="age"
+            rules={[
+              {
+                required: true,
+                message: '请输入您的年龄',
+                min: 0,
+                max: 150,
+                type: 'number',
+              },
+            ]}
+          >
+            <InputNumber />
           </FormItem>
         </Form>
       </Modal>
