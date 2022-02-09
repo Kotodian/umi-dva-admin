@@ -1,5 +1,5 @@
 import { Form, Input, Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const FormItem = Form.Item;
 
@@ -12,6 +12,12 @@ function UserEditForm(props) {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
   };
+
+  useEffect(() => {
+    form.setFieldsValue({
+      name: name,
+    });
+  });
 
   const showHandler = e => {
     if (e) e.stopPropagation();
@@ -48,7 +54,6 @@ function UserEditForm(props) {
                 message: 'Please input your name',
               },
             ]}
-            initialValue={name}
           >
             <Input />
           </FormItem>
